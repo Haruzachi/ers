@@ -213,7 +213,7 @@ $stmt = null;
             <div class="icon-box icon-bg-indigo">
                 <i class='bx bxs-help-circle icon-indigo'></i>
             </div>
-            <span class="font-medium">Help</span>
+            <span class="font-medium">Profile</span>
         </a>
         
         <a href="../includes/logout.php" class="menu-item">
