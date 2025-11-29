@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS emergency_notifications (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    type VARCHAR(50) NOT NULL,           -- e.g., Fire, Medical, Police
+    message TEXT NOT NULL,               -- Description of the emergency
+    severity VARCHAR(20) DEFAULT 'Normal', -- Optional: Low, Medium, High
+    lat DECIMAL(10,7) DEFAULT NULL,     -- Latitude coordinate
+    lng DECIMAL(10,7) DEFAULT NULL,     -- Longitude coordinate
+    dispatched TINYINT(1) DEFAULT 0,    -- 0 = Not dispatched, 1 = Dispatched
+    dispatched_at DATETIME DEFAULT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
