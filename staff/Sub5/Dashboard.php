@@ -373,104 +373,153 @@ foreach ($months as $row) {
 
 <div class="stats-grid">
 
-    <!-- PIE CHART -->
-    <div class="stat-card stat-card-primary">
-        <div class="stat-header">
-            <span class="stat-title">Incident Distribution</span>
-        </div>
+                    <!-- PIE CHART -->
+                    <div class="stat-card stat-card-primary">
+                        <div class="stat-header">
+                            <span class="stat-title">Incident Distribution</span>
+                        </div>
 
-        <canvas id="pieChart" style="height:180px;"></canvas>
+                        <canvas id="pieChart" style="height:180px;"></canvas>
 
-        <div class="stat-info">
-            <span>Total by Type</span>
+                        <div class="stat-info">
+                            <span>Total by Type</span>
+                        </div>
+                    </div>
+
+                    <!-- BAR CHART -->
+                    <div class="stat-card stat-card-white">
+                        <div class="stat-header">
+                            <span class="stat-title">Monthly Incidents</span>
+                        </div>
+
+                        <canvas id="barChart" style="height:180px;"></canvas>
+
+                        <div class="stat-info">
+                            <span>Count Per Month</span>
+                        </div>
+                    </div>
+
+                    <!-- TYPES TABLE -->
+                    <div class="stat-card stat-card-white">
+                        <div class="stat-header">
+                            <span class="stat-title">Incident Types</span>
+                        </div>
+
+                        <table style="width: 100%; font-size: 14px;">
+                            <tr><th>Type</th><th>Count</th></tr>
+                            <?php foreach ($types as $row): ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($row['type']) ?></td>
+                                    <td><?= $row['total'] ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </table>
+
+                        <div class="stat-info">
+                            <span>Live data</span>
+                        </div>
+                    </div>
+
+                    <!-- MONTH TABLE -->
+                    <div class="stat-card stat-card-primary">
+                        <div class="stat-header">
+                            <span class="stat-title">Monthly Breakdown</span>
+                        </div>
+
+                        <table style="width: 100%; font-size: 14px;">
+                            <tr><th>Month</th><th>Count</th></tr>
+                            <?php foreach ($months as $row): ?>
+                                <tr>
+                                    <td><?= $row['month'] ?></td>
+                                    <td><?= $row['total'] ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </table>
+
+                        <div class="stat-info">
+                            <span>Live Monthly Data</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- CHART JS -->
+                <script>
+                    new Chart(document.getElementById("pieChart"), {
+                        type: "pie",
+                        data: {
+                            labels: <?= json_encode($typeLabels) ?>,
+                            datasets: [{
+                                data: <?= json_encode($typeCounts) ?>
+                            }]
+                        }
+                    });
+
+                    new Chart(document.getElementById("barChart"), {
+                        type: "bar",
+                        data: {
+                            labels: <?= json_encode($monthLabels) ?>,
+                            datasets: [{
+                                data: <?= json_encode($monthCounts) ?>
+                            }]
+                        }
+                    });
+                </script>
+
+            </div>
         </div>
     </div>
 
+    <!-- NOTIFICATION JS -->
+    <script>
+    const notifBtn = document.getElementById('notifBtn');
+    const notificationsPanel = document.getElementById('notificationsPanel');
+    const closeNotifPanel = document.getElementById('closeNotifPanel');
+    const notificationsList = document.getElementById('notificationsList');
+    const notifBadge = document.getElementById('notifBadge');
 
-    <!-- BAR CHART -->
-    <div class="stat-card stat-card-white">
-        <div class="stat-header">
-            <span class="stat-title">Monthly Incidents</span>
-        </div>
-
-        <canvas id="barChart" style="height:180px;"></canvas>
-
-        <div class="stat-info">
-            <span>Count Per Month</span>
-        </div>
-    </div>
-
-
-    <!-- INCIDENT TYPES TABLE -->
-    <div class="stat-card stat-card-white">
-        <div class="stat-header">
-            <span class="stat-title">Incident Types</span>
-        </div>
-
-        <table style="width: 100%; font-size: 14px;">
-            <tr><th>Type</th><th>Count</th></tr>
-
-            <?php foreach ($types as $row): ?>
-                <tr>
-                    <td><?= htmlspecialchars($row['type']) ?></td>
-                    <td><?= $row['total'] ?></td>
-                </tr>
-            <?php endforeach; ?>
-        </table>
-
-        <div class="stat-info">
-            <span>Live data</span>
-        </div>
-    </div>
-
-
-    <!-- MONTHLY TABLE -->
-    <div class="stat-card stat-card-primary">
-        <div class="stat-header">
-            <span class="stat-title">Monthly Breakdown</span>
-        </div>
-
-        <table style="width: 100%; font-size: 14px;">
-            <tr><th>Month</th><th>Count</th></tr>
-
-            <?php foreach ($months as $row): ?>
-                <tr>
-                    <td><?= $row['month'] ?></td>
-                    <td><?= $row['total'] ?></td>
-                </tr>
-            <?php endforeach; ?>
-        </table>
-
-        <div class="stat-info">
-            <span>Live Monthly Data</span>
-        </div>
-    </div>
-
-</div>
-
-<script>
-    // PIE CHART
-    new Chart(document.getElementById("pieChart"), {
-        type: "pie",
-        data: {
-            labels: <?= json_encode($typeLabels) ?>,
-            datasets: [{
-                data: <?= json_encode($typeCounts) ?>
-            }]
-        }
+    notifBtn.addEventListener('click', () => {
+        notificationsPanel.style.display =
+            notificationsPanel.style.display === 'block' ? 'none' : 'block';
     });
 
-    // BAR CHART
-    new Chart(document.getElementById("barChart"), {
-        type: "bar",
-        data: {
-            labels: <?= json_encode($monthLabels) ?>,
-            datasets: [{
-                data: <?= json_encode($monthCounts) ?>
-            }]
+    closeNotifPanel.addEventListener('click', () => {
+        notificationsPanel.style.display = 'none';
+    });
+
+    function fetchNotifications() {
+        fetch('Dashboard.php?action=fetch_notifications')
+            .then(res => res.json())
+            .then(data => {
+                const notifications = data.notifications || [];
+                const total = data.total || 0;
+
+                notifBadge.textContent = total;
+
+                notificationsList.innerHTML = '';
+                notifications.forEach(notif => {
+                    const li = document.createElement('li');
+                    li.textContent = notif.message;
+                    notificationsList.appendChild(li);
+                });
+            })
+            .catch(err => console.error('Error fetching:', err));
+    }
+
+    fetchNotifications();
+    setInterval(fetchNotifications, 10000);
+    </script>
+
+    <!-- FIXED: COMPLETED THE CUT JS CODE -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const animationOverlay = document.getElementById('animationOverlay');
+        if (animationOverlay) {
+            animationOverlay.style.opacity = "0";
+            setTimeout(() => animationOverlay.remove(), 600);
         }
     });
-</script>
+    </script>
 
             </div>
         </div>
