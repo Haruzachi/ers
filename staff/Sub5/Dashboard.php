@@ -371,155 +371,244 @@ foreach ($months as $row) {
             <div class="dashboard-content">
         
 
+<style>
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    margin-top: 25px;
+}
+
+.stat-card {
+    padding: 35px;
+    border-radius: 25px;
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    background-color: #ffffff;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 18px 35px rgba(0,0,0,0.2);
+}
+
+.stat-card-primary {
+    background: linear-gradient(135deg, #0BB85F, #1DBF72); /* Green gradient */
+    color: white;
+}
+
+.stat-header .stat-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+canvas {
+    border-radius: 15px;
+    background-color: rgba(255,255,255,0.05);
+    padding: 15px;
+}
+
+.stat-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    margin-top: 15px;
+}
+
+.stat-table th {
+    background-color: #0BB85F;
+    color: white;
+    font-weight: 600;
+    padding: 12px 15px;
+    text-align: left;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    font-size: 16px;
+}
+
+.stat-table td {
+    background-color: #f4f6f8;
+    padding: 12px 15px;
+    font-size: 15px;
+    color:black;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.stat-table tr:last-child td {
+    border-bottom: none;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.stat-table tr:hover td {
+    background-color: #d1f7d6;
+    transition: 0.3s;
+}
+
+.stat-info {
+    margin-top: 15px;
+    font-size: 15px;
+    font-weight: 600;
+    opacity: 0.9;
+}
+</style>
+
 <div class="stats-grid">
 
-                    <!-- PIE CHART -->
-                    <div class="stat-card stat-card-primary">
-                        <div class="stat-header">
-                            <span class="stat-title">Incident Distribution</span>
-                        </div>
+    <!-- INCIDENT DISTRIBUTION PIE -->
+    <div class="stat-card stat-card-primary">
+        <div class="stat-header">
+            <span class="stat-title">Incident Distribution</span>
+        </div>
 
-                        <canvas id="pieChart" style="height:180px;"></canvas>
+        <canvas id="pieChart" style="height:280px;"></canvas>
 
-                        <div class="stat-info">
-                            <span>Total by Type</span>
-                        </div>
-                    </div>
-
-                    <!-- BAR CHART -->
-                    <div class="stat-card stat-card-white">
-                        <div class="stat-header">
-                            <span class="stat-title">Monthly Incidents</span>
-                        </div>
-
-                        <canvas id="barChart" style="height:180px;"></canvas>
-
-                        <div class="stat-info">
-                            <span>Count Per Month</span>
-                        </div>
-                    </div>
-
-                    <!-- TYPES TABLE -->
-                    <div class="stat-card stat-card-white">
-                        <div class="stat-header">
-                            <span class="stat-title">Incident Types</span>
-                        </div>
-
-                        <table style="width: 100%; font-size: 14px;">
-                            <tr><th>Type</th><th>Count</th></tr>
-                            <?php foreach ($types as $row): ?>
-                                <tr>
-                                    <td><?= htmlspecialchars($row['type']) ?></td>
-                                    <td><?= $row['total'] ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </table>
-
-                        <div class="stat-info">
-                            <span>Live data</span>
-                        </div>
-                    </div>
-
-                    <!-- MONTH TABLE -->
-                    <div class="stat-card stat-card-primary">
-                        <div class="stat-header">
-                            <span class="stat-title">Monthly Breakdown</span>
-                        </div>
-
-                        <table style="width: 100%; font-size: 14px;">
-                            <tr><th>Month</th><th>Count</th></tr>
-                            <?php foreach ($months as $row): ?>
-                                <tr>
-                                    <td><?= $row['month'] ?></td>
-                                    <td><?= $row['total'] ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </table>
-
-                        <div class="stat-info">
-                            <span>Live Monthly Data</span>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- CHART JS -->
-                <script>
-                    new Chart(document.getElementById("pieChart"), {
-                        type: "pie",
-                        data: {
-                            labels: <?= json_encode($typeLabels) ?>,
-                            datasets: [{
-                                data: <?= json_encode($typeCounts) ?>
-                            }]
-                        }
-                    });
-
-                    new Chart(document.getElementById("barChart"), {
-                        type: "bar",
-                        data: {
-                            labels: <?= json_encode($monthLabels) ?>,
-                            datasets: [{
-                                data: <?= json_encode($monthCounts) ?>
-                            }]
-                        }
-                    });
-                </script>
-
-            </div>
+        <div class="stat-info">
+            <span>Total by Type</span>
         </div>
     </div>
 
-    <!-- NOTIFICATION JS -->
-    <script>
-    const notifBtn = document.getElementById('notifBtn');
-    const notificationsPanel = document.getElementById('notificationsPanel');
-    const closeNotifPanel = document.getElementById('closeNotifPanel');
-    const notificationsList = document.getElementById('notificationsList');
-    const notifBadge = document.getElementById('notifBadge');
+    <div class="stat-card stat-card-primary">
+    <div class="stat-header">
+        <span class="stat-title">Monthly Incidents</span>
+    </div>
 
-    notifBtn.addEventListener('click', () => {
-        notificationsPanel.style.display =
-            notificationsPanel.style.display === 'block' ? 'none' : 'block';
-    });
+    <canvas id="monthlyLoadingChart" style="height:280px;"></canvas>
 
-    closeNotifPanel.addEventListener('click', () => {
-        notificationsPanel.style.display = 'none';
-    });
+    <div class="stat-info">
+        <span>Incidents per Month (Animated)</span>
+    </div>
+</div>
 
-    function fetchNotifications() {
-        fetch('Dashboard.php?action=fetch_notifications')
-            .then(res => res.json())
-            .then(data => {
-                const notifications = data.notifications || [];
-                const total = data.total || 0;
+    <!-- INCIDENT TYPES TABLE -->
+    <div class="stat-card stat-card-white">
+        <div class="stat-header">
+            <span class="stat-title">Incident Types</span>
+        </div>
 
-                notifBadge.textContent = total;
+        <table class="stat-table">
+            <tr>
+                <th>Type</th>
+                <th>Count</th>
+            </tr>
+            <?php foreach ($types as $row): ?>
+            <tr>
+                <td><?= htmlspecialchars($row['type']) ?></td>
+                <td><?= $row['total'] ?></td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
 
-                notificationsList.innerHTML = '';
-                notifications.forEach(notif => {
-                    const li = document.createElement('li');
-                    li.textContent = notif.message;
-                    notificationsList.appendChild(li);
-                });
-            })
-            .catch(err => console.error('Error fetching:', err));
-    }
+    </div>
 
-    fetchNotifications();
-    setInterval(fetchNotifications, 10000);
-    </script>
+    <!-- MONTHLY TABLE -->
+    <div class="stat-card stat-card-primary">
+        <div class="stat-header">
+            <span class="stat-title">Monthly Breakdown</span>
+        </div>
 
-    <!-- FIXED: COMPLETED THE CUT JS CODE -->
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const animationOverlay = document.getElementById('animationOverlay');
-        if (animationOverlay) {
-            animationOverlay.style.opacity = "0";
-            setTimeout(() => animationOverlay.remove(), 600);
+        <table class="stat-table">
+            <tr>
+                <th>Month</th>
+                <th>Count</th>
+            </tr>
+            <?php foreach ($months as $row): ?>
+            <tr>
+                <td><?= $row['month'] ?></td>
+                <td><?= $row['total'] ?></td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+
+    </div>
+
+</div>
+
+<script>
+    // INCIDENT DISTRIBUTION PIE CHART
+    new Chart(document.getElementById("pieChart"), {
+        type: "pie",
+        data: {
+            labels: <?= json_encode($typeLabels) ?>,
+            datasets: [{
+                data: <?= json_encode($typeCounts) ?>,
+                backgroundColor: [
+                    '#FF6384',
+                    '#36A2EB',
+                    '#FFCE56',
+                    '#4BC0C0',
+                    '#9966FF',
+                    '#FF9F40'
+                ]
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    labels: {
+                        font: { size: 14, weight: 'bold' }
+                    }
+                }
+            }
         }
     });
-    </script>
+
+   const monthlyCtx = document.getElementById("monthlyLoadingChart").getContext("2d");
+
+// Total incidents for calculation
+const totalMonthly = <?= array_sum($monthCounts) ?>;
+const monthLabels = <?= json_encode($monthLabels) ?>;
+const monthCounts = <?= json_encode($monthCounts) ?>;
+
+// Calculate percentages
+const monthPercentages = monthCounts.map(count => ((count / totalMonthly) * 100).toFixed(1));
+
+new Chart(monthlyCtx, {
+    type: 'doughnut',
+    data: {
+        labels: monthLabels,
+        datasets: [{
+            data: monthCounts,
+            backgroundColor: [
+                '#00ffbfff','#00fa00ff','#0051ffff','#ff0000ff','#ff00aaff','#BBFFD6',
+                '#D4FFE6','#A3F5B8','#69E891','#39D66C','#20C85B','#0BAF4B'
+            ],
+            borderWidth: 4,
+            borderColor: '#ffffff',
+            hoverOffset: 10
+        }]
+    },
+    options: {
+        cutout: '60%', // makes it donut-style
+        plugins: {
+            legend: {
+                display: true,
+                position: 'bottom',
+                labels: {
+                    font: { size: 14, weight: 'bold' }
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        let label = context.label || '';
+                        let value = context.raw;
+                        let percent = monthPercentages[context.dataIndex];
+                        return `${label}: ${value} (${percent}%)`;
+                    }
+                }
+            }
+        },
+        animation: {
+            animateRotate: true,
+            duration: 2000
+        }
+    }
+});
+</script>
+
+
 
             </div>
         </div>
