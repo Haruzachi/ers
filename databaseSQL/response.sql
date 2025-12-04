@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 30, 2025 at 12:02 AM
+-- Generation Time: Dec 04, 2025 at 02:00 AM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -64,7 +64,7 @@ CREATE TABLE `login_attempts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `login_attempts`d
+-- Dumping data for table `login_attempts`
 --
 
 INSERT INTO `login_attempts` (`id`, `ip_address`, `email`, `attempt_time`, `successful`) VALUES
@@ -76,7 +76,11 @@ INSERT INTO `login_attempts` (`id`, `ip_address`, `email`, `attempt_time`, `succ
 (48, '::1', 'dvonderick@gmail.com', '2025-11-16 08:35:36', 1),
 (49, '::1', 'dvonderick@gmail.com', '2025-11-16 18:58:19', 1),
 (50, '::1', 'dvonderick@gmail.com', '2025-11-16 20:22:43', 1),
-(51, '::1', 'dvonderick@gmail.com', '2025-11-29 22:50:37', 1);
+(51, '::1', 'dvonderick@gmail.com', '2025-11-29 22:50:37', 1),
+(52, '::1', 'dvonderick@gmail.com', '2025-11-30 19:16:54', 1),
+(53, '::1', 'dvonderick@gmail.com', '2025-11-30 19:21:14', 1),
+(54, '::1', 'dvonderick@gmail.com', '2025-11-30 19:28:36', 1),
+(55, '::1', 'dvonderick@gmail.com', '2025-12-04 08:58:27', 1);
 
 -- --------------------------------------------------------
 
@@ -270,7 +274,7 @@ ALTER TABLE `emergency_notifications`
 -- AUTO_INCREMENT for table `login_attempts`
 --
 ALTER TABLE `login_attempts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT for table `registration_attempts`
