@@ -1090,7 +1090,7 @@ if (isset($_POST['resend_verification'])) {
     <div class="bg-decoration bg-decoration-3"></div>
     <div class="bg-decoration bg-decoration-4"></div>
     
-    <img src="../img/logocircle.png" alt="Fire & Rescue Services Watermark" class="watermark-logo">
+    <img src="../img/Logocircle.png" alt="Fire & Rescue Services Watermark" class="watermark-logo">
     
     <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">
         <i class="fas fa-moon"></i>

@@ -262,7 +262,7 @@ footer {
 <header>
     <div class="container">
         <div class="logo">
-            <img src="./img/logocircle.png">
+            <img src="./img/Logocircle.png">
             <div>
                 <h1>Barangay Commonwealth</h1>
                 <p>Emergency Response System</p>
